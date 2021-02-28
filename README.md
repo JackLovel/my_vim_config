@@ -40,3 +40,6 @@ $ go env -w GOPROXY=https://goproxy.cn,direct
 ```
 $ go mod init main // 生成 go.mod 文件
 ```
+
+## python 
+安装运行环境 `python3.9` 
