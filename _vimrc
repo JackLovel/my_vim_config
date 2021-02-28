@@ -98,7 +98,55 @@ Plug 'junegunn/fzf.vim'
 Plug 'brooth/far.vim' "批量替换字符
 Plug 'fatih/vim-go'
 "Plug 'python-mode/python-mode', { 'for': 'python', 'branch': 'develop' }
+
+"copy form: https://github.com/evandrocoan/dotfiles/blob/master/.vimrc
+ if v:version >= 800
+      let s:pythonexecutable = "notinstalled"
+
+      if executable("python")
+        let s:pythonexecutable = "python"
+      endif
+
+      if executable("python3")
+        let s:pythonexecutable = "python3"
+      endif
+
+      " https://vi.stackexchange.com/questions/9606/vim-compiled-with-python3-but-haspython-returns-0
+      if s:pythonexecutable != 'notinstalled'
+        let s:ispython3supported = system( s:pythonexecutable .
+            \ ' -c "import sys; sys.stdout.write(
+            \    str( int( sys.version_info[0] > 2 and sys.version_info[1] > 5 ) )
+            \    )"' )
+        if s:ispython3supported == '1' && has('python3')
+          if has('nvim')
+            Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+          else
+            Plug 'Shougo/deoplete.nvim'
+            Plug 'roxma/nvim-yarp'
+            Plug 'roxma/vim-hug-neovim-rpc'
+          endif
+        endif
+      endif
+    endif
+
+Plug 'sbdchd/neoformat'
+Plug 'w0rp/ale'
+Plug 'tpope/vim-commentary' "代码注释
+Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
+Plug 'junegunn/gv.vim'
+Plug 'lervag/vimtex'
 call plug#end()
+
+" fix deoplete.nvim error(Calling wrong python3 interpreter under Cygwin) 
+if has('win32unix')
+  if executable("python3.9")
+    let g:python3_host_prog = 'python3.9'
+    let &pythonthreedll = 'python39.lib'
+  endif
+endif
+let g:deoplete#enable_at_startup = 1
+set completeopt-=preview
 
 "设置主题
 colorscheme hybrid
@@ -123,3 +171,31 @@ nmap <leader>s <Plug>(easymotion-s2)
 "wiki: https://github.com/fatih/vim-go/wiki/Tutorial
 autocmd FileType go nmap <leader>b  <Plug>(go-build)
 autocmd FileType go nmap <leader>r  <Plug>(go-run)
+
+if has('win32unix')
+  if executable("python3.9")
+    let g:python3_host_prog = 'C:\Users\gog\AppData\Local\Programs\Python\Python39\python.exe'
+    let &pythonthreedll = 'C:\Users\gog\AppData\Local\Programs\Python\Python39\libs\python39.lib'
+  endif
+endif
+let g:deoplete#enable_at_startup=1
+
+set updatetime=100 "100毫秒
+
+" vimtex config 
+let g:tex_flavor='latex'
+
+" 阅读器相关的配置 包含正反向查找功能 仅供参考
+let g:vimtex_view_general_viewer = 'SumatraPDF'
+let g:vimtex_view_general_options_latexmk = '-reuse-instance'
+let g:vimtex_view_general_options
+\ = '-reuse-instance -forward-search @tex @line @pdf'
+\ . ' -inverse-search "' . exepath(v:progpath)
+\ . ' --servername ' . v:servername
+\ . ' --remote-send \"^<C-\^>^<C-n^>'
+\ . ':execute ''drop '' . fnameescape(''\%f'')^<CR^>'
+\ . ':\%l^<CR^>:normal\! zzzv^<CR^>'
+\ . ':call remote_foreground('''.v:servername.''')^<CR^>^<CR^>\""'
+
+set conceallevel=1
+let g:tex_conceal='abdmg'
