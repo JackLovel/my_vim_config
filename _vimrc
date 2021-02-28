@@ -91,6 +91,13 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'yggdroot/indentline' "代码缩进线 
 Plug 'scrooloose/nerdtree' "目录树
 Plug 'ctrlpvim/ctrlp.vim' "支持模糊搜索
+Plug 'easymotion/vim-easymotion'
+Plug 'tpope/vim-surround' "成对编辑
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+Plug 'brooth/far.vim' "批量替换字符
+Plug 'fatih/vim-go'
+"Plug 'python-mode/python-mode', { 'for': 'python', 'branch': 'develop' }
 call plug#end()
 
 "设置主题
@@ -108,3 +115,11 @@ let NERDTreeIgnore = [
 
 "
 let g:ctrlp_map = '<c-p>'
+
+"
+nmap <leader>s <Plug>(easymotion-s2)
+
+"vim-go  
+"wiki: https://github.com/fatih/vim-go/wiki/Tutorial
+autocmd FileType go nmap <leader>b  <Plug>(go-build)
+autocmd FileType go nmap <leader>r  <Plug>(go-run)
