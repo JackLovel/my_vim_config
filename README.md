@@ -4,6 +4,14 @@ gvim 8.2.12
 win10 
 ```
 
+## 目录
+```
+:echo &rtp // 查看vimrc 以及 插件存放的路径 
+
+比如：
+C:\Users\gog\vimfiles\autoload (存放plug.vim) // 存放 vim-plug 的路径
+C:\Users\gog\vimfiles\plugin // 存放所有的插件的路径
+```
 ## 编辑文件
 ```
 :e <file_path>
