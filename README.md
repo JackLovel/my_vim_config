@@ -1,4 +1,5 @@
-## 版本
+## 版本 
+[新的仓库（国内）](https://gitee.com/wcc210/vim_config) github 上传好慢
 ```
 gvim 8.2.12
 win10 
